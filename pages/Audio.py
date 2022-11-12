@@ -17,8 +17,7 @@ st.markdown(
 
 
 def audiorec_demo_app():
-
-    parent_dir = os.path.dirname(os.path.abspath(__file__))
+    # parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join("audio_record/frontend/build")
     st_audiorec = components.declare_component("st_audiorec", path=build_dir)
 
@@ -26,7 +25,7 @@ def audiorec_demo_app():
     st.write('\n\n')
     val = st_audiorec()
     st.write(
-        'Audio data received in the Python backend will appear below this message ...')
+        'Audio data received, analyzing emotion...')
 
     if isinstance(val, dict):
         with st.spinner('retrieving audio-recording...'):
@@ -41,6 +40,9 @@ def audiorec_demo_app():
         # wav_bytes contains audio data in format to be further processed
         # display audio data as received on the Python side
         st.audio(wav_bytes, format='audio/wav')
+        # save audio data to file in Data folder
+        with open('Data/audio.wav', 'wb') as f:
+            f.write(wav_bytes)
 
 
 if __name__ == '__main__':
