@@ -1,0 +1,16 @@
+av
+keras
+matplotlib
+mediapipe
+numpy
+pandas
+pymongo
+python-dotenv
+scikit_learn
+seaborn
+streamlit
+streamlit_webrtc
+tekore
+tensorflow
+tqdm
+transformers
