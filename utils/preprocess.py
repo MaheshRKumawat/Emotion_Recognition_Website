@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer, TFBertModel
 from tqdm._tqdm_notebook import tqdm_notebook
-from predict import predict_speech
+from .predict import predict_speech
 
 tqdm_notebook.pandas()
 load_dotenv()
@@ -106,8 +106,9 @@ def speech_preprocess(raw_speech):
     # and return the emotion with the highest frequency
     # as the final emotion
 
-    emotion_list = []
-    for i in range(0, len(raw_speech), 2500):
-        chunk = raw_speech[i:i+2500]
-        emotion_list.append(get_key(predict_speech(chunk)))
-    return max(set(emotion_list), key=emotion_list.count)
+    # emotion_list = []
+    # for i in range(0, len(raw_speech), 2500):
+    #     chunk = raw_speech[i:i+2500]
+    #     emotion_list.append(get_key(predict_speech(chunk)))
+    # return max(set(emotion_list), key=emotion_list.count)
+    pass

@@ -20,33 +20,20 @@ def create_spectrogram(data, sr, e):
     librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='hz')
     plt.colorbar()
 
-
-def noise(data, random=False, rate=0.035, threshold=0.075):
-    """Add some noise to sound sample. Use random if you want to add random noise with some threshold.
-    Or use rate Random=False and rate for always adding fixed noise."""
-    if random:
-        rate = np.random.random() * threshold
-    noise_amp = rate*np.random.uniform()*np.amax(data)
-    data = data + noise_amp*np.random.normal(size=data.shape[0])
-    return data
-
-
-def stretch(data, rate=0.8):
-    """Stretching data with some rate."""
-    return librosa.effects.time_stretch(data, rate)
-
-
 def shift(data, rate=1000):
     """Shifting data with some rate"""
     shift_range = int(np.random.uniform(low=-5, high=5)*rate)
     return np.roll(data, shift_range)
 
+def noise(data):
+    noise_amp = 0.035*np.random.uniform()*np.amax(data)
+    data = data + noise_amp*np.random.normal(size=data.shape[0])
+    return data
 
-def pitch(data, sampling_rate, pitch_factor=0.7, random=False):
-    """"Add some pitch to sound sample. Use random if you want to add random pitch with some threshold.
-    Or use pitch_factor Random=False and rate for always adding fixed pitch."""
-    if random:
-        pitch_factor = np.random.random() * pitch_factor
+def stretch(data, rate=0.8):
+    return librosa.effects.time_stretch(data, rate)
+
+def pitch(data, sampling_rate, pitch_factor=0.7):
     return librosa.effects.pitch_shift(data, sampling_rate, pitch_factor)
 
 
@@ -122,37 +109,50 @@ def mfcc(data, sr, frame_length=2048, hop_length=512, flatten: bool = True):
     return np.squeeze(mfcc_feature.T) if not flatten else np.ravel(mfcc_feature.T)
 
 
-def extract_features(data, sr, frame_length=2048, hop_length=512):
+def extract_features(data):
+    sr = 44100
     result = np.array([])
-    result = np.hstack((result,
-                        zcr(data, frame_length, hop_length),
-                        rmse(data, frame_length, hop_length),
-                        mfcc(data, sr, frame_length, hop_length)))
+    # Zero Crossing Rate
+    zcr = np.mean(librosa.feature.zero_crossing_rate(y=data).T, axis=0)
+    result=np.hstack((result, zcr))#42
+
+    # Chroma_stft
+    stft = np.abs(librosa.stft(data))
+    chroma_stft = np.mean(librosa.feature.chroma_stft(S=stft, sr=sr, n_fft=200).T, axis=0)
+    result = np.hstack((result, chroma_stft))#54
+
+    # MFCC
+    mfcc = np.mean(librosa.feature.mfcc(y=data, sr=sr, n_fft=200).T, axis=0)
+    result = np.hstack((result, mfcc))#45
+
+    # MelSpectogram
+    mel = np.mean(librosa.feature.melspectrogram(y=data, sr=sr, n_fft=200).T, axis=0)
+    result = np.hstack((result, mel))#45
+    
+    '''# Tonnetz
+    tonnetz = np.mean(librosa.feature.tonnetz(y=data, sr=sr).T, axis=0);
+    result = np.hstack((result, tonnetz));#131'''
+    
     return result
 
 
-def get_features(path, duration=2.5, offset=0.6):
-    # duration and offset are used to take care of the no audio in start and the ending of each audio files as seen above.
-    data, sample_rate = librosa.load(path, duration=duration, offset=offset)
-
+def get_features(data):
+    result = []
+    
     # without augmentation
-    res1 = extract_features(data, sample_rate)
-    result = np.array(res1)
-
-    # data with noise
-    noise_data = noise(data, random=True)
-    res2 = extract_features(noise_data, sample_rate)
-    result = np.vstack((result, res2))  # stacking vertically
-
-    # data with pitching
-    pitched_data = pitch(data, sample_rate, random=True)
-    res3 = extract_features(pitched_data, sample_rate)
-    result = np.vstack((result, res3))  # stacking vertically
-
-    # data with pitching and white_noise
-    new_data = pitch(data, sample_rate, random=True)
-    data_noise_pitch = noise(new_data, random=True)
-    res3 = extract_features(data_noise_pitch, sample_rate)
-    result = np.vstack((result, res3))  # stacking vertically
-
+    res1 = extract_features(data)
+    result.append(res1)
+    
+    # with noise
+    noise_data = noise(data)
+    res2 = extract_features(noise_data)
+    result.append(res2)
+    
+    # with stretching and pitching
+    new_data = stretch(data)
+    sr = 44100
+    data_stretch_pitch = pitch(new_data, sr)
+    res3 = extract_features(data_stretch_pitch)
+    result.append(res3)
+    
     return result

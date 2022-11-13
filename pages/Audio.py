@@ -3,7 +3,8 @@ import numpy as np
 import streamlit as st
 from io import BytesIO
 import streamlit.components.v1 as components
-
+# from utils.preprocess import *
+from utils.predict import *
 
 st.set_page_config(page_title="Emotion Recognition")
 st.markdown(
@@ -40,10 +41,17 @@ def audiorec_demo_app():
         # wav_bytes contains audio data in format to be further processed
         # display audio data as received on the Python side
         st.audio(wav_bytes, format='audio/wav')
+        # print("Hello there: ",wav_bytes)
+
         # save audio data to file in Data folder
         with open('Data/audio.wav', 'wb') as f:
             f.write(wav_bytes)
 
+        # run the audio emotion recognition model
+        
+        emotion = predict_speech('Data/audio.wav')
+
+        st.write(emotion)
 
 if __name__ == '__main__':
     audiorec_demo_app()
