@@ -21,7 +21,8 @@ def text_app():
     st.write('''
     ## Enter the text below to analyze the emotion
     ''')
-    emotion = st.text_area("Enter text here")
+    text = st.text_area("Enter text here")
+    emotion = predict_text(text)
 
     if st.button('Analyze'):
         st.write("##")
