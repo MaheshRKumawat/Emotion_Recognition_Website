@@ -14,3 +14,5 @@ tekore
 tensorflow
 tqdm
 transformers
+contractions
+nltk
