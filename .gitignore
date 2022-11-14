@@ -1,3 +1,4 @@
 Emotion-Recognition-using-Text-with-Emojis-and-Speech
 __pycache__/
 .env
+Data/audio.wav
