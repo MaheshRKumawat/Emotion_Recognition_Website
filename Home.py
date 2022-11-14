@@ -26,4 +26,6 @@ import streamlit as st
 # else:
 #     st.write("Please login to continue")
 
+st.set_page_config(page_title="Emotion Recognition", layout="wide")
+
 st.header("Emotion Recognizer using Text and Speech")
