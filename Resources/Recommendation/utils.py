@@ -11,6 +11,55 @@ genre_names = ['Dance Pop', 'Electronic', 'Electropop', 'Hip Hop',
 audio_feats = ["acousticness", "danceability",
                "energy", "instrumentalness", "valence", "tempo"]
 
+def get_test_feat(emotion):
+    if emotion == "Happy":
+        acousticness = 0.2 - round(random.uniform(0.01, 0.09), 2)
+        danceability = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        energy = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        instrumentalness = 0.1 - round(random.uniform(0.01, 0.09), 2)
+        valence = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        tempo = 120 + random.randint(0, 20)
+
+    # If user emotion is sad then we will recommend happy with high valence and energy
+    elif emotion == "Sad":
+        acousticness = 0.2 - round(random.uniform(0.01, 0.09), 2)
+        danceability = 0.7 - round(random.uniform(0.01, 0.19), 2)
+        energy = 0.6 - round(random.uniform(0.01, 0.09), 2)
+        instrumentalness = 0.1 - round(random.uniform(0.01, 0.09), 2)
+        valence = 0.9 + round(random.uniform(0.01, 0.09), 2)
+        tempo = 120 - random.randint(0, 20)
+
+    # If user emotion is angry then we will recommend relaxing songs with high valence and low energy
+    elif emotion == "Angry":
+        acousticness = 0.2 - round(random.uniform(0.01, 0.09), 2)
+        danceability = 0.7 - round(random.uniform(0.01, 0.09), 2)
+        energy = 0.4 - round(random.uniform(0.01, 0.09), 2)
+        instrumentalness = 0.1 - round(random.uniform(0.01, 0.09), 2)
+        valence = 0.9 + round(random.uniform(0.01, 0.09), 2)
+        tempo = 120 - random.randint(0, 20)
+
+    # If user emotion is fear then we will recommend songs with high valence and low energy
+    elif emotion == "Fear":
+        acousticness = 0.2 - round(random.uniform(0.01, 0.09), 2)
+        danceability = 0.7 - round(random.uniform(0.01, 0.09), 2)
+        energy = 0.4 - round(random.uniform(0.01, 0.09), 2)
+        instrumentalness = 0.1 - round(random.uniform(0.01, 0.09), 2)
+        valence = 0.9 + round(random.uniform(0.01, 0.09), 2)
+        tempo = 120 - random.randint(0, 20)
+
+    # If user emotion is neutral then we will recommend songs with high valence and energy
+    else:
+        acousticness = 0.2 - round(random.uniform(0.01, 0.09), 2)
+        danceability = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        energy = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        instrumentalness = 0.1 - round(random.uniform(0.01, 0.09), 2)
+        valence = 0.7 + round(random.uniform(0.01, 0.09), 2)
+        tempo = 120 + random.randint(0, 20)
+
+    test_feat = [acousticness, danceability, energy, instrumentalness, valence, tempo]
+
+    return test_feat
+
 @st.cache(allow_output_mutation=True)
 def load_data():
     df = pd.read_csv(path)
