@@ -18,9 +18,9 @@ roberta_model = TFRobertaModel.from_pretrained('roberta-base')
 def create_model(bert_model, max_len):
     input_ids = tf.keras.Input(shape=(max_len,), dtype='int32')
     attention_masks = tf.keras.Input(shape=(max_len,), dtype='int32')
-    output = bert_model([input_ids, attention_masks])
+    base_model_output = bert_model([input_ids, attention_masks])
 
-    x = output[0]
+    x = base_model_output[0]
 
     x1 = Dropout(0.1)(x)
     x1 = Conv1D(128, 5, padding='same')(x1)
@@ -33,9 +33,7 @@ def create_model(bert_model, max_len):
     x1 = MaxPool1D(pool_size=1, padding='valid')(x1)
 
     x1 = LSTM(1024, return_sequences=True)(x1)
-    #x1 = Bidirectional(x1, input_shape=(1024,))
     x1 = LSTM(2048, return_sequences=True)(x1)
-    #x1 = Bidirectional(x1)
     x1 = Dropout(0.3)(x1)
 
     x1 = Dense(1024, activation='relu')(x1)
@@ -52,9 +50,6 @@ def create_model(bert_model, max_len):
 
     model = tf.keras.models.Model(
         inputs=[input_ids, attention_masks], outputs=output)
-
-    model.compile(Adam(lr=1e-5), loss='categorical_crossentropy',
-                  metrics=['accuracy'])
 
     return model
 

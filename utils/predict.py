@@ -12,7 +12,7 @@ load_model = tf.keras.models.load_model
 
 def predict_speech(raw_speech):
     speech_model = load_model(
-        "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_model.h5", compile=False)
+        "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_final_model.h5", compile=False)
     test_audio_arrays = []
     test_x, _ = librosa.load(raw_speech, sr=44100)
     test_audio_arrays.append(test_x)
