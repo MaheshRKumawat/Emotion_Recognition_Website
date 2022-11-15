@@ -8,7 +8,7 @@ from Resources.Text.utils import *
 from Resources.Text.model import *
 
 labels = ['Angry', 'Fear', 'Happy', 'Neutral', 'Sad']
-
+load_model = tf.keras.models.load_model
 
 def predict_speech(raw_speech):
     speech_model = load_model(
