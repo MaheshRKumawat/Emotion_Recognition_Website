@@ -10,29 +10,32 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from tensorflow.keras.models import load_model
 
-'''
-/plain roberta
-/plain bert
-/plain bi LSTM
-/hybrid roberta + lstm + cnn
-'''
-
 labels = ['Angry', 'Fear', 'Happy', 'Neutral', 'Sad']
 
-# def predict_speech(raw_speech):
-#     speech_model = load_model(
-#         "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_final_model.h5", compile=False)
-#     test_audio_arrays = []
-#     test_x, _ = librosa.load(raw_speech, sr=44100)
-#     test_audio_arrays.append(test_x)
-#     test_feature = get_features(np.array(test_x))
-#     test_final = np.expand_dims(test_feature, axis=2)
-#     y_pred_test = speech_model.predict(test_final)
-#     for emo in y_pred_test:
-#         emotion = labels[np.argmax(emo)]
-#     return emotion
+def predict_speech(raw_speech):
+    speech_model = load_model(
+        "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech.h5", compile=False)
+    test_audio_arrays = []
+    test_feature = get_features(raw_speech)
+    temp = np.resize(test_feature, (4, 2376))
+    test_final = np.expand_dims(temp, axis=2)
+
+    y_pred_test = speech_model.predict(test_final)
+    for emo in y_pred_test:
+        emotion = labels[np.argmax(emo)]
+    print("Emotion is : ", emotion)
+    y_pred_test = speech_model.predict(test_final)
+    print('y_pred_test', y_pred_test)
+    print('np.average(y_pred_test,axis=0)', np.average(y_pred_test, axis=0))
+    print('labels[np.argmax(np.average(y_pred_test,axis=0))]',
+          labels[np.argmax(np.average(y_pred_test, axis=0))])
+
+    final_emotion = labels[np.argmax(np.average(y_pred_test, axis=0))]
+
+    return final_emotion
 
 
+"""
 def predict_speech(raw_speech):
     '''
     AudioSegment.from_wav(
@@ -132,6 +135,7 @@ def predict_speech(raw_speech):
     # final_speech_emotion = np.argmax(np.average(final_input, axis=0), axis=1)
     # print("\nfinal_speech_emotion: ", final_speech_emotion)
     # return final_speech_emotion
+"""
 
 
 def predict_text(text_sentence):
