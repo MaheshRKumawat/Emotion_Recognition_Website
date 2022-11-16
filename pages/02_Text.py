@@ -27,29 +27,55 @@ def text_app():
     if Analyze:
         if text != '':
             st.write('\n\n')
-            emotion = predict_text(text)
+            # emotion = predict_text(text)
+            bilstm_emotion = bilstm_predict_text(text)
+            bert_emotion = bert_predict_text(text)
             st.write("##")
             placeholder = st.empty()
-            if emotion == 'Happy':
-                placeholder.success(
-                    f'Emotion: {emotion}! Here are some songs to cheer you more!')
-            elif emotion == 'Neutral':
-                placeholder.info(
-                    f'Emotion: {emotion}! Here are some songs to cheer you up!')
-            elif emotion == 'Angry' or emotion == 'Sad':
-                placeholder.error(
-                    f'Emotion: {emotion}! Here are some songs to make you feel realxed!')
-            else:
-                placeholder.warning(
-                    f'Emotion: {emotion}! Here are some songs we recommend to relax you a bit!')
+            placeholder.info(placeholder_value(bilstm_emotion, "Bi-LSTM"))
+            st.write('#')
+            placeholder = st.empty()
+            placeholder.info(placeholder_value(bert_emotion, "BERT"))
+            
             st.write("##")
             st.write(
                 "We would like to recommend you songs or videos to cheer you up!")
+            st.write("Click on the Song or Video Page at the left to get started!")
             st.write("##")
+
+            # save the emotion to a file and save it to Data folder
+            with open('Data/emotion.txt', 'w') as f:
+                f.write(bilstm_emotion)
+                
         else:
             st.write('\n\n')
             st.write('''## Please enter the text to analyze the emotion''')
 
+def placeholder_value(emotion, model_name):
+    text = ''
+    if emotion == 'Happy':
+        text = model_name + " model predicts that you are Happy! Here are some songs to cheer you more!"
+    elif emotion == 'Neutral':
+        text = model_name + " model predicts that you are Neutral! Here are some songs to cheer you up!"
+    elif emotion == 'Angry' or emotion == 'Sad':
+        text = model_name + " model predicts that you are " + emotion + "! Here are some songs to make you feel realxed!"
+    else:
+        text = model_name + " model predicts that you are " + emotion + "! Here are some songs we recommend to relax you a bit!"
+    return text
 
 if __name__ == '__main__':
     text_app()
+
+
+# if emotion == 'Happy':
+#                 placeholder.success(
+#                     f'Emotion: {emotion}! Here are some songs to cheer you more!')
+#             elif emotion == 'Neutral':
+#                 placeholder.info(
+#                     f'Emotion: {emotion}! Here are some songs to cheer you up!')
+#             elif emotion == 'Angry' or emotion == 'Sad':
+#                 placeholder.error(
+#                     f'Emotion: {emotion}! Here are some songs to make you feel realxed!')
+#             else:
+#                 placeholder.warning(
+#                     f'Emotion: {emotion}! Here are some songs we recommend to relax you a bit!')

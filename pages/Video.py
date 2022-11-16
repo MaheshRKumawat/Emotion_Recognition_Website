@@ -38,4 +38,9 @@ def Video_Recommendation(Emotion):
 
 
 if __name__ == '__main__':
-    Video_Recommendation("Fear")
+    # take emotion from Data folder file
+    path = 'Data/emotion.txt'
+    emotion = "Neutral"
+    with open(path, 'r') as f:
+        emotion = f.read()
+    Video_Recommendation(emotion)

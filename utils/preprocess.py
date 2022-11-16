@@ -47,8 +47,7 @@ bilstm_model = load_model(
     "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/bi-lstm.h5")
 bert_model.load_weights(
     "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/bert_model.h5")
-speech_model = load_model(
-    "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_model.h5")
+
 
 
 X = train['text']
@@ -77,10 +76,6 @@ def bilstm_predict(sentence):
     return ans
 
 
-def bilstm_preprocess(raw_text):
-    return bilstm_predict(raw_text)
-
-
 def bert_preprocess(raw_text):
     x_val = bert_tokenizer(
         text=[raw_text],
@@ -97,18 +92,3 @@ def bert_preprocess(raw_text):
     print(bert_emotion_val)
     bert_emotion_key = np.argmax(bert_emotion_val)
     return bert_encoded_dict[bert_emotion_key]
-
-
-def speech_preprocess(raw_speech):
-    # The model can handle 2-3 seconds of speech
-    # Break the speech into chunks of 2.5 seconds
-    # and predict the emotion for each chunk
-    # and return the emotion with the highest frequency
-    # as the final emotion
-
-    # emotion_list = []
-    # for i in range(0, len(raw_speech), 2500):
-    #     chunk = raw_speech[i:i+2500]
-    #     emotion_list.append(get_key(predict_speech(chunk)))
-    # return max(set(emotion_list), key=emotion_list.count)
-    pass

@@ -65,22 +65,13 @@ def audiorec_app():
         st.write("##")
 
         st.write("We would like to recommend you songs or videos to cheer you up!")
+        st.write("Click on the Song or Video Page at the left to get started!")
 
         st.write("##")
 
-        # col1, col2, col3 = st.columns([2, 1, 2])
-        # with col1:
-        #     if col1.button("Recommend Songs"):
-        #         # move to song recommendation page
-        #         pass
-                
-                
-        # with col3:
-        #     if col3.button("Recommend Videos"):
-        #         # st.session_state.runpage = Song_Recommendation(emotion)
-        #         st.write("Coming Soon!")
-
-        # st.write("##")
+        # save the emotion to a file and save it to Data folder
+        with open('Data/emotion.txt', 'w') as f:
+            f.write(emotion)
 
 
 if __name__ == '__main__':

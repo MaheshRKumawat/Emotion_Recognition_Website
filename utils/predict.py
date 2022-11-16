@@ -137,8 +137,7 @@ def predict_speech(raw_speech):
     # return final_speech_emotion
 """
 
-
-def predict_text(text_sentence):
+def hybrid_predict_text(text_sentence):
     preprocessed_text = preprocess(text_sentence)
     input_ids, attention_masks = roberta_inference_encode(
         preprocessed_text, maximum_length=max_len)
@@ -148,3 +147,9 @@ def predict_text(text_sentence):
     result = roberta_text_model.predict([input_ids, attention_masks])
     emotion = labels[np.argmax(result)]
     return emotion
+
+def bilstm_predict_text(text_sentence):
+    return bilstm_predict(text_sentence)
+
+def bert_predict_text(text_sentence):
+    return bert_predict(text_sentence)

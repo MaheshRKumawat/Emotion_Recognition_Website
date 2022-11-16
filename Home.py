@@ -28,14 +28,17 @@ import streamlit as st
 
 st.set_page_config(page_title="Emotion Recognition", layout="wide")
 
-st.header("Emotion Recognizer using Text and Speech")
-
-st.write("## Capstone Project")
-st.write('##')
-st.write("## Speech Recognition uses 75 percent output from speecg model along with 25 percent from the transcribed text input fed to text model")
-st.write('##')
-st.write("## Here we implemented 3 types of text models: ")
-st.write("### 1. Plain RoBerta Model")
-st.write("### 2. Plain Bert Model")
-st.write("### 3. Plain Bi-LSTM Model")
-st.write("### 4. Hybrid Model (RoBerta + LSTM + CNN)")
+#make header in center
+with st.container():
+    st.header('Emotion Recognition Using Text (With Emoji) and Speech')
+    st.header("Capstone Project")
+    st.write("#### Speech Recognition uses 75 percent output from speecg model along with 25 percent from the transcribed text input fed to text model")
+    st.write("#### Here we implemented 4 types of text models: ")
+    placeholder = st.empty()
+    placeholder.info("1. RoBerta Model")
+    placeholder = st.empty()
+    placeholder.info("2. Bert Model")
+    placeholder = st.empty()
+    placeholder.info("3. Bi-LSTM Model")
+    placeholder = st.empty()
+    placeholder.info("4. Hybrid Model (RoBerta + LSTM + CNN)")

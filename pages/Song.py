@@ -115,4 +115,9 @@ def Song_Recommendation(Emotion):
 
 
 if __name__ == '__main__':
-    Song_Recommendation("Neutral")
+    # take emotion from Data folder file
+    path = 'Data/emotion.txt'
+    emotion = "Neutral"
+    with open(path, 'r') as f:
+        emotion = f.read()
+    Song_Recommendation(emotion)
