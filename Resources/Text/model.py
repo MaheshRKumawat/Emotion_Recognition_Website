@@ -41,7 +41,5 @@ def create_model():
 
     model = tf.keras.models.Model(
         inputs=[input_ids, attention_masks], outputs=output)
-    
-    # bert_model.layers[2].trainable = True
 
     return model
