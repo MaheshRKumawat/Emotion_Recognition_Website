@@ -16,3 +16,6 @@ tqdm
 transformers
 contractions
 nltk
+speechrecognition
+ffmpeg-python
+pydub
