@@ -3,16 +3,16 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 from Resources.Speech.utils import *
 from Resources.Text.utils import *
+from Resources.Text.model import *
 
 labels = ['Angry', 'Fear', 'Happy', 'Neutral', 'Sad']
-
+load_model = tf.keras.models.load_model
 
 def predict_speech(raw_speech):
     speech_model = load_model(
-        "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_model.h5", compile=False)
+        "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_final_model.h5", compile=False)
     test_audio_arrays = []
     test_x, _ = librosa.load(raw_speech, sr=44100)
     test_audio_arrays.append(test_x)
@@ -24,12 +24,14 @@ def predict_speech(raw_speech):
     return emotion
 
 
-def predict_text(text_sentence, max_len):
+def predict_text(text_sentence):
     preprocessed_text = preprocess(text_sentence)
     input_ids, attention_masks = roberta_inference_encode(
         preprocessed_text, maximum_length=max_len)
+    # roberta_text_model = text_model()
     roberta_text_model = load_model(
-        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta.h5', compile=False)
+        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta.h5',
+        custom_objects={'TFRobertaModel': TFRobertaModel})
     result = roberta_text_model.predict([input_ids, attention_masks])
     emotion = labels[np.argmax(result)]
     return emotion

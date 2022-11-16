@@ -10,6 +10,7 @@ from tensorflow.keras.optimizers import Adam
 from transformers import RobertaTokenizerFast
 nltk.download('stopwords')
 nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 tokenizer = RobertaTokenizerFast.from_pretrained("roberta-base")
 
