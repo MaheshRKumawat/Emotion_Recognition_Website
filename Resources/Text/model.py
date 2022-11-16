@@ -1,16 +1,15 @@
 import tensorflow as tf
 from transformers import TFRobertaModel
-from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU
+from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU, Input
 
 max_len = 75
 
 roberta_model = TFRobertaModel.from_pretrained('roberta-base')
 
-
-def create_model(bert_model, max_len):
-    input_ids = tf.keras.Input(shape=(max_len,), dtype='int32')
-    attention_masks = tf.keras.Input(shape=(max_len,), dtype='int32')
-    base_model_output = bert_model([input_ids, attention_masks])
+def create_model():
+    input_ids = Input(shape=(max_len,), name='input_ids', dtype=tf.int32)
+    attention_masks = Input(shape=(max_len,),  name='attention_mask', dtype=tf.int32)
+    base_model_output = roberta_model([input_ids, attention_masks])
 
     x = base_model_output[0]
 
@@ -42,10 +41,7 @@ def create_model(bert_model, max_len):
 
     model = tf.keras.models.Model(
         inputs=[input_ids, attention_masks], outputs=output)
+    
+    # bert_model.layers[2].trainable = True
 
-    return model
-
-
-def text_model():
-    model = create_model(roberta_model, max_len)
     return model
