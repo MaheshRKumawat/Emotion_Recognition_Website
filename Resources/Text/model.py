@@ -1,16 +1,8 @@
 import tensorflow as tf
 from transformers import TFRobertaModel
+from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU
 
 max_len = 75
-
-Dropout = tf.keras.layers.Dropout
-Conv1D = tf.keras.layers.Conv1D
-MaxPool1D = tf.keras.layers.MaxPool1D
-LSTM = tf.keras.layers.LSTM
-Dense = tf.keras.layers.Dense
-LeakyReLU = tf.keras.layers.LeakyReLU
-Flatten = tf.keras.layers.Flatten
-Adam = tf.keras.optimizers.Adam
 
 roberta_model = TFRobertaModel.from_pretrained('roberta-base')
 

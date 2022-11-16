@@ -28,9 +28,10 @@ def predict_text(text_sentence):
     preprocessed_text = preprocess(text_sentence)
     input_ids, attention_masks = roberta_inference_encode(
         preprocessed_text, maximum_length=max_len)
-    roberta_text_model = text_model()
-    roberta_text_model.load_weights(
-        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta.h5')
+    # roberta_text_model = text_model()
+    roberta_text_model = load_model(
+        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta.h5',
+        custom_objects={'TFRobertaModel': TFRobertaModel})
     result = roberta_text_model.predict([input_ids, attention_masks])
     emotion = labels[np.argmax(result)]
     return emotion
