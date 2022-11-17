@@ -5,10 +5,9 @@ from keras.models import load_model
 from transformers import TFRobertaModel
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.text import Tokenizer
-from transformers import AutoTokenizer, TFBertModel
+from transformers import AutoTokenizer, TFBertModel, RobertaTokenizerFast
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU, Input
-
 
 def hybrid_model():
     max_len = 75
@@ -50,7 +49,6 @@ def hybrid_model():
         inputs=[input_ids, attention_masks], outputs=output)
 
     return model
-
 
 def bert_model():
     max_len = 70
