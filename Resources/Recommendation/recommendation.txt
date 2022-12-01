@@ -1,0 +1,36 @@
+Music and Video Recommendation
+
+From the speech model and text model we predict the emotion of the user and after that we recommend music and videos
+
+Music Recommendation
+Every emotion is associated with a particular music features.
+Music features include tempo, loudness, energy, danceability, valence, acousticness, instrumentalness, liveness, speechiness, key, mode, time signature, duration, and genre.
+We use the Spotify API to get the music features of the songs and then we recommend the songs based on the emotion of the user.
+For our Recommendation we focus on the following features:
+1. Acousticness
+2. Danceability
+3. Energy
+4. Instrumentalness
+5. Valence
+6. Tempo
+
+A happy song has a high energy, high valence, and a fast tempo. 
+A sad song has a low energy, low valence, and a slow tempo. 
+A angry song has a high energy, low valence, and a fast tempo.
+A relaxed song has a low energy, high valence, and a slow tempo.
+
+If the user's emotion is "Sad" then we recommend happy songs with high energy, high valence, and a fast tempo.
+If the user's emotion is "Happy" then we recommend happy songs with medium energy, medium valence, and a medium tempo.
+If the user's emotion is "Angry" then we recommend relaxed songs with low energy, high valence, and a slow tempo.
+If the user's emotion is "Neutral" the we recommend happy songs with high energy, high valence, and a fast tempo.
+If the user's emotion is "Fear" then we recommend relaxed songs with low energy, high valence, and a slow tempo.
+
+Video Recommendation
+
+We created a small datasets of channels and videos to recommend to the user based on the emotion of the user.
+We recommend videos based on the following features:
+1. If "Happy" the we recommend Educational videos, News, and Entertainment videos.
+2. If "Sad" then we recommend Comedy and Entertainment videos.
+3. If "Angry" then we recommend Comedy and Entertainment videos.
+4. If "Neutral" then we recommend Comedy, Educational, Entertainment, and News videos.
+5. If "Fear" then we recommend Comedy, Educational, Entertainment, and News videos.
