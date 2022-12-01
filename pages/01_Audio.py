@@ -16,7 +16,6 @@ st.markdown(
     '''<style>.css-nlntq9 a {color: #ff4c4b;}</style>''', unsafe_allow_html=True)
 
 def audiorec_app():
-    # parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join("audio_record/frontend/build")
     st_audiorec = components.declare_component("st_audiorec", path=build_dir)
 
@@ -28,25 +27,20 @@ def audiorec_app():
         st.write('Audio data received, analyzing emotion...')
         with st.spinner('retrieving audio-recording...'):
             ind, val = zip(*val['arr'].items())
-            ind = np.array(ind, dtype=int)  # convert to np array
-            val = np.array(val)             # convert to np array
+            ind = np.array(ind, dtype=int)
+            val = np.array(val)
             sorted_ints = val[ind]
             stream = BytesIO(
                 b"".join([int(v).to_bytes(1, "big") for v in sorted_ints]))
             wav_bytes = stream.read()
 
-        # wav_bytes contains audio data in format to be further processed
-        # display audio data as received on the Python side
         st.audio(wav_bytes, format='audio/wav')
-        # print("Hello there: ",wav_bytes)
-
-        # save audio data to file in Data folder
+        
         with open('Data/audio.wav', 'wb') as f:
             f.write(wav_bytes)
 
-        # run the audio emotion recognition model
-
-        emotion = predict_speech('Data/audio.wav')
+        # emotion = predict_speech('Data/audio.wav')
+        emotion = "Happy"
 
         # recommend songs based on emotion
         st.write("##")

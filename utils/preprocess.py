@@ -49,7 +49,6 @@ bert_model.load_weights(
     "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/bert_model.h5")
 
 
-
 X = train['text']
 bilstm_tokenizer = Tokenizer(15212, lower=True, oov_token='UNK')
 bilstm_tokenizer.fit_on_texts(X)
