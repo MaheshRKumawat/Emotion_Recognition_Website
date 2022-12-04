@@ -1,7 +1,7 @@
 import Home
 import streamlit as st
-from utils.predict import *
-from utils.demojize import *
+# from utils.predict import *
+# from utils.demojize import *
 
 db = Home.db
 user_id = st.session_state.get('user_id', None)
@@ -29,14 +29,18 @@ def text_app():
     if Analyze:
         if text != '':
             st.write('\n\n')
-            # demojize start
-            text = remove_emoji(text)
-            print("Demojized text :", text)
-            # demojize end
-            roberta_emotion = roberta_predict(text)
-            hybrid_emotion = hybrid_predict_text(text)
-            bilstm_emotion = bilstm_predict_text(text)
-            bert_emotion = bert_predict_text(text)
+            # # demojize start
+            # text = remove_emoji(text)
+            # print("Demojized text :", text)
+            # # demojize end
+            # roberta_emotion = roberta_predict(text)
+            # hybrid_emotion = hybrid_predict_text(text)
+            # bilstm_emotion = bilstm_predict_text(text)
+            # bert_emotion = bert_predict_text(text)
+            roberta_emotion = "Sad"
+            hybrid_emotion = "Sad"
+            bilstm_emotion = "Sad"
+            bert_emotion = "Sad"
             st.write('#')
             placeholder = st.empty()
             placeholder.info(placeholder_value(hybrid_emotion, 'Hybrid'))

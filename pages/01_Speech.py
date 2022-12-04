@@ -5,7 +5,7 @@ import numpy as np
 import streamlit as st
 import streamlit.components.v1 as components
 from io import BytesIO
-from utils.predict import *
+# from utils.predict import *
 
 db = Home.db
 user_id = st.session_state.get('user_id', None)
@@ -46,7 +46,8 @@ def audiorec_app():
         with open('Data/audio.wav', 'wb') as f:
             f.write(wav_bytes)
 
-        emotion = predict_speech('Data/audio.wav')
+        # emotion = predict_speech('Data/audio.wav')
+        emotion = "Happy"
 
         if wav_bytes:
             emotion = "Happy"
