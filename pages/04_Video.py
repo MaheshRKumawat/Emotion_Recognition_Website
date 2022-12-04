@@ -38,9 +38,8 @@ def Video_Recommendation(Emotion):
 
 
 if __name__ == '__main__':
-    # take emotion from Data folder file
-    path = 'Data/emotion.txt'
-    emotion = "Neutral"
-    with open(path, 'r') as f:
-        emotion = f.read()
-    Video_Recommendation(emotion)
+    emotion = st.session_state.get('emotion', None)
+    if emotion == None:
+        st.write("Please provide input in text or speech page")
+    else:
+        Video_Recommendation(emotion)

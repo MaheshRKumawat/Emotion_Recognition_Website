@@ -9,6 +9,7 @@ from transformers import AutoTokenizer, TFBertModel, RobertaTokenizerFast
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU, Input
 
+
 def hybrid_model():
     max_len = 75
     roberta_model = TFRobertaModel.from_pretrained('roberta-base')
@@ -49,6 +50,7 @@ def hybrid_model():
         inputs=[input_ids, attention_masks], outputs=output)
 
     return model
+
 
 def bert_model():
     max_len = 70

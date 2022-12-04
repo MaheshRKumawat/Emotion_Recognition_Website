@@ -1,10 +1,12 @@
-import os
-import numpy as np
+import Home
 import streamlit as st
-from io import BytesIO
-import streamlit.components.v1 as components
 from utils.predict import *
 from utils.demojize import *
+
+db = Home.db
+user_id = st.session_state.get('user_id', None)
+username = st.session_state.get('username', None)
+text_db = db["text"]
 
 st.markdown(
     '''<style>.css-1egvi7u {margin-top: -3rem;}</style>''', unsafe_allow_html=True)
@@ -54,9 +56,15 @@ def text_app():
             st.write("Click on the Song or Video Page at the left to get started!")
             st.write("##")
             final_emotion = hybrid_emotion
-            # save the emotion to a file and save it to Data folder
-            with open('Data/emotion.txt', 'w') as f:
-                f.write(final_emotion)
+
+            st.session_state.emotion = final_emotion
+            st.session_state.speech = False
+            st.session_state.text = True
+            st.session_state.feedback = False
+            st.session_state.text_id = text_db.insert_one({"user_id": user_id, "username": username, "text": text, "predicted_emotion": st.session_state.get('emotion') , "actual_emotion": st.session_state.get('emotion'), "feedback": None}).inserted_id
+            st.write("##")
+            st.write("We would like to recommend you songs or videos to cheer you up!")
+            st.write("Click on the Song or Video Page at the left to get started!")
 
         else:
             st.write('\n\n')
@@ -81,4 +89,8 @@ def placeholder_value(emotion, model_name):
 
 
 if __name__ == '__main__':
-    text_app()
+    user_id = st.session_state.get('user_id', None)
+    if user_id is None:
+        st.write("Please login to continue")
+    else:
+        text_app()

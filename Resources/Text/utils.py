@@ -62,14 +62,17 @@ def roberta_inference_encode(data, maximum_length):
     attention_masks.append(encoded['attention_mask'])
     return np.array(input_ids), np.array(attention_masks)
 
-def roberta_create_model(bert_model, max_len):
-    input_ids = tf.keras.Input(shape=(max_len,),dtype='int32')
-    attention_masks = tf.keras.Input(shape=(max_len,),dtype='int32')
 
-    output = bert_model([input_ids,attention_masks])
+def roberta_create_model(bert_model, max_len):
+    input_ids = tf.keras.Input(shape=(max_len,), dtype='int32')
+    attention_masks = tf.keras.Input(shape=(max_len,), dtype='int32')
+
+    output = bert_model([input_ids, attention_masks])
     output = output[1]
 
     output = tf.keras.layers.Dense(5, activation='softmax')(output)
-    model = tf.keras.models.Model(inputs = [input_ids,attention_masks],outputs = output)
-    model.compile(Adam(lr=1e-5), loss='categorical_crossentropy', metrics=['accuracy'])
+    model = tf.keras.models.Model(
+        inputs=[input_ids, attention_masks], outputs=output)
+    model.compile(Adam(lr=1e-5), loss='categorical_crossentropy',
+                  metrics=['accuracy'])
     return model
