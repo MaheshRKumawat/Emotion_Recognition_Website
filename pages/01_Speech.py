@@ -5,13 +5,15 @@ import numpy as np
 import streamlit as st
 import streamlit.components.v1 as components
 from io import BytesIO
-# from utils.predict import *
+from utils.predict import *
 
 db = Home.db
 user_id = st.session_state.get('user_id', None)
 fs = gridfs.GridFS(db)
 filename = "speech.wav"
 
+if "wav_file" not in st.session_state:
+    st.session_state.wav_file = None
 
 st.markdown(
     '''<style>.css-1egvi7u {margin-top: -3rem;}</style>''', unsafe_allow_html=True)
@@ -42,11 +44,27 @@ def audiorec_app():
             wav_bytes = stream.read()
 
         st.audio(wav_bytes, format='audio/wav')
-        
+
+        # emotion = predict_speech(audio)
         with open('Data/audio.wav', 'wb') as f:
             f.write(wav_bytes)
 
+        text_sentence = predict_speech("Data/audio.wav")
+
+        print("\n\n\n\n")
+        print("************\n")
+        print("Transcript Text: ", text_sentence)
+        print("\n************")
+        print("\n\n\n\n\n")
+
+
+        placeholder = st.empty()
+        placeholder.info(f"Transcript Text: {text_sentence}")
+        
+        
+
         # emotion = predict_speech('Data/audio.wav')
+        # emotion = predict_speech(wav_bytes)
         emotion = "Happy"
 
         if wav_bytes:

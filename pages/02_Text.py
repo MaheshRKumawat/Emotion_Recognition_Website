@@ -38,7 +38,7 @@ def text_app():
             # bilstm_emotion = bilstm_predict_text(text)
             # bert_emotion = bert_predict_text(text)
             roberta_emotion = "Sad"
-            hybrid_emotion = "Sad"
+            hybrid_emotion = "Sad" 
             bilstm_emotion = "Sad"
             bert_emotion = "Sad"
             st.write('#')
@@ -66,10 +66,6 @@ def text_app():
             st.session_state.text = True
             st.session_state.feedback = False
             st.session_state.text_id = text_db.insert_one({"user_id": user_id, "username": username, "text": text, "predicted_emotion": st.session_state.get('emotion') , "actual_emotion": st.session_state.get('emotion'), "feedback": None}).inserted_id
-            st.write("##")
-            st.write("We would like to recommend you songs or videos to cheer you up!")
-            st.write("Click on the Song or Video Page at the left to get started!")
-
         else:
             st.write('\n\n')
             st.write('''## Please enter the text to analyze the emotion''')

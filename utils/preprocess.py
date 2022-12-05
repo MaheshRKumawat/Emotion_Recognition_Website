@@ -9,7 +9,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer, TFBertModel
 from tqdm._tqdm_notebook import tqdm_notebook
-from .predict import predict_speech
 
 tqdm_notebook.pandas()
 load_dotenv()
