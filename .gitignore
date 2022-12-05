@@ -2,4 +2,3 @@ Emotion-Recognition-using-Text-with-Emojis-and-Speech
 __pycache__/
 Data/audio.wav
 Data/emotion.txt
-.streamlit/secrets.toml
