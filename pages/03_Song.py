@@ -14,7 +14,8 @@ def Song_Recommendation(Emotion):
                    'Jazz', 'K-pop', 'Latin', 'Pop', 'Pop Rap', 'R&B', 'Rock']
     # default genre
     genre = 'Pop'
-    # 11 genres so 11 buttons
+
+    # show users 11 genres
     st.write("##### Select your genre")
     col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
     col6, col7, col8, col9, col10, col11 = st.columns([1, 1, 1, 1, 1, 1])
