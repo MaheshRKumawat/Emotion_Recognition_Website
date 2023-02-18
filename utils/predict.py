@@ -21,11 +21,10 @@ def roberta_predict(text_sentence):
         preprocessed_text, maximum_length=max_len)
     model = roberta_create_model(roberta_model, max_len)
     model.load_weights(
-        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta.h5')
+        'Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\roberta.h5')
     result = model.predict([input_ids, attention_masks])
     emotion = labels[np.argmax(result)]
     return emotion
-
 
 ##########################################
 ##########################################
@@ -33,61 +32,63 @@ def roberta_predict(text_sentence):
 ##########################################
 ##########################################
 
-# def predict_speech(path):
-
-#     r = sr.Recognizer()
-#     rs = sr.AudioFile('Data/audio.wav')
-#     with rs as source:
-#         audio = r.record(source)
-#     try:
-#         text_input = r.recognize_google(audio, language='en-IN', show_all=True)
-#         print("Google Speech Working")
-#     except:
-#         print('Google Speech Recognition Failed')
-#     text_sentence = text_input['alternative'][0]['transcript']
-#     print("Transcript : ", text_sentence)
-#     preprocessed_text = preprocess(text_sentence)
-#     input_ids, attention_masks = roberta_inference_encode(
-#         preprocessed_text, maximum_length=max_len)
-#     roberta_text_model = load_model(
-#         "Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\roberta-hybrid-model.h5",
-#         custom_objects={'TFRobertaModel': TFRobertaModel})
-#     emotion_text = np.array(roberta_text_model.predict([input_ids, attention_masks]))
-
-#     encoder = OneHotEncoder()
-#     #fetch the last column of labels and perform one hot encoding on them
-#     label = encoder.fit_transform(np.array(labels).reshape(-1,1)).toarray()
+def predict_speech(path):
+    r = sr.Recognizer()
+    rs = sr.AudioFile('Data/audio.wav')
+    with rs as source:
+        audio = r.record(source)
+    try:
+        text_input = r.recognize_google(audio, language='en-IN', show_all=True)
+        print("Google Speech Working")
+    except:
+        print('Google Speech Recognition Failed')
+    text_sentence = text_input['alternative'][0]['transcript']
+    print("\n\nAll Transcripts : ", text_input)
+    print("\nTranscript with highest confidence: ", text_sentence)
+    print("\n\n\nTranscript : ", text_sentence)
+    preprocessed_text = preprocess(text_sentence)
+    input_ids, attention_masks = roberta_inference_encode(
+        preprocessed_text, maximum_length=max_len)
+    roberta_text_model = load_model(
+        "Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\roberta-hybrid-model.h5",
+        custom_objects={'TFRobertaModel': TFRobertaModel})
+    temp1 = roberta_text_model.predict([input_ids, attention_masks])
     
-#     # load the best model
-#     res_model = load_model(
-#         "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/speech_cnn.hdf5")
+    ######SPEECH###########
 
-#     # get audio features from the recorded voice
-#     feature = get_features_recorded(path)
-#     # apply min max scaling
-#     scaler = MinMaxScaler()
-#     feature = scaler.fit_transform(feature)
-#     # get the predicted label
-#     label = np.array(res_model.predict(feature))
+    encoder = OneHotEncoder()
+    #fetch the last column of labels and perform one hot encoding on them
+    label = encoder.fit_transform(np.array(labels).reshape(-1,1)).toarray()
     
-#     # sum1 = np.sum([label, emotion_text], axis=0)
+    # load the best model
+    res_model = load_model(
+        "Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\speech_model.hdf5")
+    # get audio features from the recorded voice
+    feature = get_features_recorded(path)
+    # apply min max scaling
+    scaler = MinMaxScaler()
+    feature = scaler.fit_transform(feature)
+    # get the predicted label
+    temp2 = res_model.predict(feature)
     
-#     # get the label information by reversing one hot encoded output
-#     label_predicted = encoder.inverse_transform(label)
-#     print("\n\n\nThe Emotion Predicted For Recorded Audio Using Microphone is {}".format(
-#         label_predicted))
-
-#     print("\n\n\n*********************************\n\n")
-#     print("Emotion Text", emotion_text)
-#     print("\n\n")
-#     print("Label", label)
-#     print("\n\n")
-#     print("Label Predicted", label_predicted)
-#     print("\n\n")
-#     print("Label Predicted[0]", label_predicted[0])
-#     print("\n\n\n*********************************\n\n")
+    emotion_text = np.average(temp1, axis=0)
+    # emotion_speech = np.average(temp2, axis=0)
+    # perc allocation for text
+    perc = 0.7
     
-#     return label_predicted[0]
+    emotion_text = int(perc * 30) * [emotion_text]
+    emotion_comb = emotion_text
+    emotion_speech = int(1 - perc)*10 * [temp2]
+    for each in range(int(1 - perc)*10):
+        for sub in each:
+            emotion_comb.append(sub)
+    # emotion_comb = emotion_text + emotion_speech
+    # r = np.concatenate([emotion_text, [emotion_speech]])
+    r = np.array(emotion_comb)
+    print("Combined array : ",r)
+    res = np.average(r, axis=0)
+    index = np.argmax(res)
+    return labels[index]
 
 
 def hybrid_predict_text(text_sentence):
@@ -95,7 +96,7 @@ def hybrid_predict_text(text_sentence):
     input_ids, attention_masks = roberta_inference_encode(
         preprocessed_text, maximum_length=max_len)
     roberta_text_model = load_model(
-        'Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/roberta-hybrid-model.h5',
+        'Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\roberta-hybrid-model.h5',
         custom_objects={'TFRobertaModel': TFRobertaModel})
     result = roberta_text_model.predict([input_ids, attention_masks])
     emotion = labels[np.argmax(result)]
@@ -109,7 +110,7 @@ def bilstm_predict_text(text_sentence):
 def bert_predict_text(text_sentence):
     return bert_predict(text_sentence)
 
-
+'''
 def predict_speech(raw_speech):
     r = sr.Recognizer()
     rs = sr.AudioFile(raw_speech)
@@ -156,3 +157,24 @@ def predict_speech(raw_speech):
     except:
         print('Google Speech Recognition Failed')
     return labels[final_speech_emotion]
+    
+    # get the label information by reversing one hot encoded output
+    # label_predicted = encoder.inverse_transform(label)
+    
+    r = np.concatenate([emotion_text, label])
+    rr = np.average(r, axis = 0)
+    index = np.argmax(rr)
+    
+    print("\n\n\n*********************************\n\n")
+    print("Temp", temp)
+    print("\n\n")
+    print("Emotion Text", emotion_text)
+    print("\n\n")
+    print("Label", label)
+    print("\n\n")
+    print("r", r)
+    print("\n\n")
+    print("rr", rr)
+    print("\n\n")
+    print("index", index)
+'''

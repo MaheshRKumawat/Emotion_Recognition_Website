@@ -1,7 +1,7 @@
 import Home
 import streamlit as st
-# from utils.predict import *
-# from utils.demojize import *
+from utils.predict import *
+from utils.demojize import *
 
 db = Home.db
 user_id = st.session_state.get('user_id', None)
@@ -29,28 +29,18 @@ def text_app():
     if Analyze:
         if text != '':
             st.write('\n\n')
-            # # demojize start
-            # text = remove_emoji(text)
-            # print("Demojized text :", text)
-            # # demojize end
-            # roberta_emotion = roberta_predict(text)
-            # hybrid_emotion = hybrid_predict_text(text)
-            # bilstm_emotion = bilstm_predict_text(text)
-            # bert_emotion = bert_predict_text(text)
-            roberta_emotion = "Sad"
-            hybrid_emotion = "Sad" 
-            bilstm_emotion = "Sad"
-            bert_emotion = "Sad"
+            text = remove_emoji(text)
+            roberta_emotion = roberta_predict(text)
+            hybrid_emotion = hybrid_predict_text(text)
+            bilstm_emotion = bilstm_predict_text(text)
+            bert_emotion = bert_predict_text(text)
             st.write('#')
             placeholder = st.empty()
             placeholder.info(placeholder_value(hybrid_emotion, 'Hybrid'))
-            st.write("##")
             placeholder = st.empty()
             placeholder.info(placeholder_value(roberta_emotion, 'RoBerta'))
-            st.write('#')
             placeholder = st.empty()
             placeholder.info(placeholder_value(bilstm_emotion, "Bi-LSTM"))
-            st.write('#')
             placeholder = st.empty()
             placeholder.info(placeholder_value(bert_emotion, "BERT"))
 
@@ -73,15 +63,15 @@ def text_app():
 
 def placeholder_value(emotion, model_name):
     text = ''
-    if emotion == 'Happy':
+    if emotion == 'Happy' or emotion == 'happy':
         text = model_name + \
             " model predicts that you are Happy! Here are some songs to cheer you more!"
-    elif emotion == 'Neutral':
+    elif emotion == 'Neutral' or emotion == 'neutral':
         text = model_name + \
             " model predicts that you are Neutral! Here are some songs to cheer you up!"
-    elif emotion == 'Angry' or emotion == 'Sad':
+    elif emotion == 'Angry' or emotion == 'Sad' or emotion == 'angry' or emotion == 'sad':
         text = model_name + " model predicts that you are " + \
-            emotion + "! Here are some songs to make you feel realxed!"
+            emotion + "! Here are some songs to make you feel relaxed!"
     else:
         text = model_name + " model predicts that you are " + emotion + \
             "! Here are some songs we recommend to relax you a bit!"

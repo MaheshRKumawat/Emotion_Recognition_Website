@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from transformers import TFRobertaModel
 from sklearn.model_selection import train_test_split
-from keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.text import Tokenizer
 from transformers import AutoTokenizer, TFBertModel, RobertaTokenizerFast
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPool1D, LSTM, Flatten, LeakyReLU, Input
@@ -78,11 +78,10 @@ def bert_model():
 
 
 bilstm_model = load_model(
-    "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/bi-lstm.h5")
+    "Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\bi-lstm.h5")
 
 bert_model = bert_model()
-bert_model.load_weights(
-    "Emotion-Recognition-using-Text-with-Emojis-and-Speech/model/bert_model.h5")
+bert_model.load_weights("Emotion-Recognition-using-Text-with-Emojis-and-Speech\model\\bert_model.h5")
 
 
 def get_key(value):

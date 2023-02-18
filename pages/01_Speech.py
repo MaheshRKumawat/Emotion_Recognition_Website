@@ -49,29 +49,10 @@ def audiorec_app():
         with open('Data/audio.wav', 'wb') as f:
             f.write(wav_bytes)
 
-        text_sentence = predict_speech("Data/audio.wav")
-
-        print("\n\n\n\n")
-        print("************\n")
-        print("Transcript Text: ", text_sentence)
-        print("\n************")
-        print("\n\n\n\n\n")
-
-
+        emotion = predict_speech("Data/audio.wav")
         placeholder = st.empty()
-        placeholder.info(f"Transcript Text: {text_sentence}")
-        
-        
-
-        # emotion = predict_speech('Data/audio.wav')
-        # emotion = predict_speech(wav_bytes)
-        emotion = "Happy"
 
         if wav_bytes:
-            emotion = "Happy"
-
-            placeholder = st.empty()
-
             if emotion == 'Happy':
                 placeholder.success(
                     f'Emotion: {emotion}! Here are some songs to cheer you more!')
@@ -80,7 +61,7 @@ def audiorec_app():
                     f'Emotion: {emotion}! Here are some songs to cheer you up!')
             elif emotion == 'Angry' or emotion == 'Sad':
                 placeholder.error(
-                    f'Emotion: {emotion}! Here are some songs to make you feel realxed!')
+                    f'Emotion: {emotion}! Here are some songs to make you feel relaxed!')
             else:
                 placeholder.warning(
                     f'Emotion: {emotion}! Here are some songs we recommend to relax you a bit!')

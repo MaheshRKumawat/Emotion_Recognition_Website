@@ -52,12 +52,12 @@ X = train['text']
 bilstm_tokenizer = Tokenizer(15212, lower=True, oov_token='UNK')
 bilstm_tokenizer.fit_on_texts(X)
 
-bert_encoded_dict = {0: 'anger', 1: 'fear', 2: 'happy', 3: 'neutral', 4: 'sad'}
+bert_encoded_dict = {0: 'Anger', 1: 'Fear', 2: 'Happy', 3: 'Neutral', 4: 'Sad'}
 bert_tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
 
 
 def get_key(value):
-    dictionary = {'happy': 0, 'angry': 1, 'neutral': 2, 'sad': 3, 'fear': 4}
+    dictionary = {'Happy': 0, 'Angry': 1, 'Neutral': 2, 'Sad': 3, 'Fear': 4}
     for key, val in dictionary.items():
         if (val == np.argmax(value)):
             return key
